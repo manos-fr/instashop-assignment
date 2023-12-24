@@ -1,0 +1,135 @@
+<div
+  class="banner-innerpage"
+  style="background-image:url(assets/images/background/dubai-background2.jpg)"
+>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-md-6 align-self-center text-center">
+        <h1 class="title">{{ blogDetail?.title }}</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner
+  bdColor="rgba(0, 0, 0, 0.8)"
+  size="medium"
+  color="#fff"
+  type="pacman"
+  [fullScreen]="true"
+  ><p style="color: white">Loading...</p></ngx-spinner
+>
+<div class="container" *ngIf="edit">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <h3 class="mt-2">Title</h3>
+      <angular-editor
+        class="mt-2"
+        [placeholder]="'Enter text here...'"
+        [(ngModel)]="title"
+      ></angular-editor>
+      <h3 class="mt-2">Short Info</h3>
+      <angular-editor
+        class="mt-2"
+        [placeholder]="'Enter text here...'"
+        [(ngModel)]="shortInfo"
+      ></angular-editor>
+      <h3 class="mt-2">Description</h3>
+      <angular-editor
+        class="mt-2"
+        [placeholder]="'Enter text here...'"
+        [(ngModel)]="description"
+      ></angular-editor>
+
+      <form class="mt-2">
+        <div class="form-group">
+          <fieldset class="form-group">
+            <h3 class="mt-2">Upload a photo</h3>
+            {{ imageError }}
+            <div class="custom-file fileInputProfileWrap">
+              <input
+                type="file"
+                (change)="fileChangeEvent($event)"
+                class="fileInputProfile"
+              />
+              <div class="img-space">
+                <ng-container *ngIf="isImageSaved; else elseTemplate">
+                  <img [src]="cardImageBase64" />
+                </ng-container>
+                <ng-template #elseTemplate>
+                  <img
+                    src="../../../../assets/images/background/placeholder.jpg"
+                    class="img-responsive"
+                  />
+                </ng-template>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved"
+          >Remove</a
+        >
+      </form>
+
+      <div class="m-t-30">
+        <button
+          type="button"
+          class="btn btn-warning-gradiant btn-rounded"
+          *ngIf="usersService.isAdmin()"
+          (click)="stopEditting()"
+        >
+          <i class="fa fa-edit"></i> Leave Edit
+        </button>
+        <button
+          type="button"
+          class="btn btn-success-gradiant btn-rounded ml-2"
+          *ngIf="usersService.isAdmin()"
+          (click)="updatePost()"
+        >
+          <i class="fa fa-save"></i> Update Sight
+        </button>
+      </div>
+      <hr class="op-5" />
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="!edit">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="mini-spacer">
+        <ul class="text-uppercase m-t-40 list-inline font-13 font-medium">
+          <li>
+            <a routerLink="">{{ blogDetail?.updatedAt?.slice(0, 10) }} </a>
+          </li>
+        </ul>
+        <h2 class="title font-light">
+          {{ blogDetail?.title }}
+        </h2>
+        <p class="m-t-30 m-b-30">
+          {{ blogDetail?.short_info }}
+        </p>
+        <p class="m-t-30 m-b-30">
+          {{ blogDetail?.description }}
+        </p>
+
+        <div class="m-t-30">
+          <a href="{{ blogDetail?.url }}" target="_blank">
+            <button type="button" class="btn bg-facebook btn-rounded mr-3">
+              <i class="fa fa-link"></i> Visit {{ blogDetail?.title }}'s page
+            </button>
+          </a>
+          <button
+            type="button"
+            class="btn bg-twitter btn-rounded"
+            *ngIf="usersService.isAdmin()"
+            (click)="editPost()"
+          >
+            <i class="fa fa-edit"></i> Edit
+          </button>
+        </div>
+      </div>
+      <hr class="op-5" />
+    </div>
+  </div>
+</div>

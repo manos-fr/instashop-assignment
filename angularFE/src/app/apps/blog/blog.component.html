@@ -1,0 +1,62 @@
+<div
+  class="static-slider-head"
+  style="background-image:url(assets/images/background/dubai-background.jpg)"
+>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-md-6 align-self-center text-center no-trans">
+        <h1 class="title">Dubai Sightseeing</h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container spacer">
+  <div class="row justify-content-center ">
+    <div class="col-md-8 text-center">
+      <h2 class="title">Dubai Landmarks</h2>
+      <h6 class="subtitle">
+        Take a virtual tour at the greatest Dubai Landmarks
+      </h6>
+    </div>
+  </div>
+  <div class="row m-t-40">
+    <div
+      class="col-md-4"
+      *ngFor="
+        let bl of sightsService.Blogs
+          | slice: (page - 1) * pageSize:(page - 1) * pageSize + pageSize
+      "
+    >
+      <div class="card" data-aos="flip-left" data-aos-duration="1200">
+        <a href="{{ bl.photo }}" target="_blank">
+          <img
+            class="card-img-top"
+            [src]="bl.photo_thumb"
+            alt="sight img"
+            height="250px"
+          />
+        </a>
+        <div class="date-pos bg-info-gradiant">
+          <span>{{ bl.updatedAt.slice(0, 10) }}</span>
+        </div>
+        <h5 class="linking font-medium m-t-10 cursor-pointer m-t-50">
+          <span (click)="viewDetail(bl.objectId)">{{ bl.title }}</span>
+        </h5>
+        <p class="m-t-20">{{ bl.short_info.slice(0, 250) }}..</p>
+        <a class="linking font-medium text-themecolor m-t-10 cursor-pointer">
+          <span (click)="viewDetail(bl.objectId)">Show Detail</span>
+          <i class="ti-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center mt-5">
+    <ngb-pagination
+      [(page)]="page"
+      [pageSize]="pageSize"
+      [collectionSize]="sightsService.Blogs.length"
+    ></ngb-pagination>
+  </div>
+</div>
